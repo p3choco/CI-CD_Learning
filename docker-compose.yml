@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+  user-service:
+    build: ./user-service
+    ports:
+      - "5001:5000"
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: mydb
+    depends_on:
+      - db
+  order-service:
+    build: ./order-service
+    ports:
+      - "5002:5000"
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: mydb
+    depends_on:
+      - db
