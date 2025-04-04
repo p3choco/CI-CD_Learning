@@ -4,17 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://twoje-repo.git', branch: 'main'
+                git url: 'https://github.com/p3choco/CI-CD_Learning.git', branch: 'master'
             }
         }
         stage('Test & Build User Service') {
             steps {
                 dir('user-service') {
-                    // 1. Zainstaluj zależności (opcjonalnie)
                     sh 'pip install -r requirements.txt'
-                    // 2. Odpal testy
                     sh 'pytest tests/ --maxfail=1 --disable-warnings'
-                    // 3. Build obrazu Dockera
                     sh 'docker build -t user-service:latest .'
                 }
             }
