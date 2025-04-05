@@ -43,12 +43,14 @@ pipeline {
         }
         stage('Push Docker Images') {
             steps {
-                script {
-                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
-                    sh 'docker tag user-service:latest $DOCKER_USER/user-service:latest'
-                    sh 'docker push $DOCKER_USER/user-service:latest'
-                    sh 'docker tag order-service:latest $DOCKER_USER/order-service:latest'
-                    sh 'docker push $DOCKER_USER/order-service:latest'
+                withCredentials([string(credentialsId: '6cc4b590-b6e2-4a46-b673-9b272abe41ec', variable: 'DOCKER_TOKEN')]) {
+                    script {
+                        sh 'echo "$DOCKER_TOKEN" | docker login --username pbednarski --password-stdin'
+                        sh 'docker tag user-service:latest pbednarski/user-service:latest'
+                        sh 'docker push pbednarski/user-service:latest'
+                        sh 'docker tag order-service:latest pbednarski/order-service:latest'
+                        sh 'docker push pbednarski/order-service:latest'
+                    }
                 }
             }
         }

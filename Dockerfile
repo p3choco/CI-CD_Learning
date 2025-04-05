@@ -7,6 +7,8 @@ RUN apt-get update && \
     echo "Zainstalowano python3.11-venv" && \
     dpkg -l | grep python3.11-venv
 
+RUN apt-get update && apt-get install -y docker.io
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER jenkins
